@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
-const NameFilter = () => {
+const NameFilter = (props) => {
+  
+
   return (
     <div className="filter">
-      <form className="search">
+      <form className="search" onSubmit={(event)=>props.handleNameFilter(event)}>
         <label>
           Name Filter:
           <input

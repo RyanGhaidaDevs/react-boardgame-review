@@ -11,10 +11,25 @@ export default class BoardGameContainer extends Component {
     currentGenre: {
       id: "",
       name: "",
-    }
+    }, 
+    filterName: ""
+  }
+
+
+  //Need to fetch data 
+
+  componentDidMount() {
+    fetch('http://localhost:3000/boardgames').then(response => response.json()).then(data=> this.setState({
+      games: data
+    }))
+
+    fetch('http://localhost:3000/genres').then(response => response.json()).then(data=> this.setState({
+      genres: data
+    }, ()=> console.log(this.state)))
   }
 
   genreFilter = (event) => {
+    console.log(event.target.value)
     // Option 1: match by name === value
     // const currentGenre = this.state.genres.find(genre => genre.name === event.target.value);
     // Option 2: change value to id in <option> and for controlled value in <select> and match by id === value
@@ -28,7 +43,22 @@ export default class BoardGameContainer extends Component {
     // const id = event.target.options[event.target.selectedIndex].getAttribute('data-value');
     // const currentGenre = this.state.genres.find(genre => genre.id == id);
 
-    this.setState({ currentGenre });
+    this.setState({ currentGenre }, ()=> console.log(this.state));
+  }
+
+
+    nameFilter = (event) => {
+      event.preventDefault();
+      let filterName = event.target.name.value
+      console.log(filterName)
+      this.setState({filterName})
+
+    }
+
+    handleSubmit(event){
+    event.preventDefault()
+    
+
   }
 
   render() {
@@ -38,12 +68,13 @@ export default class BoardGameContainer extends Component {
           genres={this.state.genres}
           currentGenre={this.state.currentGenre}
           handleGenreFilter={this.genreFilter}
+          handleNameFilter={this.nameFilter}
         />
         <GameForm
           genres={this.state.genres}
           handleSubmit={this.handleSubmit}
         />
-        <GamesTable />
+        <GamesTable  filterName={this.state.filterName} currentGenre={this.state.currentGenre.id} games={this.state.games} genres={this.state.genres}/>
       </div>
     )
   }

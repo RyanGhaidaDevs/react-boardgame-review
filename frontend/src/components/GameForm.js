@@ -15,10 +15,15 @@ export default class GameForm extends Component {
     this.setState({ genre });
   }
 
+  handleSubmit(event){
+    event.preventDefault();
+    debugger
+  }
+
   render() {
     return (
       <div className="gameform">
-        <form className="create">
+        <form className="create" onSubmit={this.handleSubmit}>
           <label>
             Name:
             <input
